@@ -20,9 +20,9 @@ local defaults = {
 local cfg
 local timer
 local cpu_hist, ram_hist
-local SPARK_COLS = 8 -- number of bar columns shown (compact)
+local SPARK_COLS = 10 -- number of bar columns shown (compact)
 local SPARK_SEP = "" -- 2 spaces so tall bars don't merge at high values
-local GAP = "  " -- padding between the value and the chart
+local GAP = " " -- padding between the value and the chart
 local LABEL = " CPU " -- " CPU "/" RAM " are the same width
 local VALUE_W = 6 -- width of the formatted value (e.g. "  5.6%")
 -- Auto-fit the window to the content so the chart never clips, regardless of
@@ -70,7 +70,6 @@ local function tick()
 				{ text = cpu_hist:sparkline(SPARK_COLS, SPARK_SEP), hl = cpu_hl },
 			},
 			{}, -- blank lines so RAM isn't stuck to CPU
-			{},
 			{
 				{ text = " RAM " },
 				{ text = ram_val, hl = ram_hl },
@@ -84,7 +83,6 @@ local function tick()
 			{ { text = " PROCMON", hl = "ProcmonTitle" } },
 			{},
 			{ { text = " CPU   --", hl = "ProcmonWarn" } },
-			{},
 			{},
 			{ { text = " RAM   --", hl = "ProcmonWarn" } },
 		})
