@@ -7,9 +7,9 @@ sparkline. Refreshes every 10s. Toggle off/on anytime.
 ```
  PROCMON
 
- CPU   2.4%    ▂  ▅  ▃  ▆  ▇  █
+ CPU   2.4%  ▂  ▅  ▃  ▆  ▇  █
 
- RAM   148M    ▃  ▄  ▅  ▆  ▇  █
+ RAM   148M  ▃  ▄  ▅  ▆  ▇  █
 ```
 
 ## Requirements
