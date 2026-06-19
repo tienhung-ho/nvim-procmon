@@ -20,8 +20,10 @@ local defaults = {
 local cfg
 local timer
 local cpu_hist, ram_hist
-local SPARK_WIDTH = 11
-local WIN_WIDTH = 24
+local SPARK_COLS = 8     -- number of bar columns shown
+local SPARK_SEP = " "    -- space between columns so bars read as distinct
+local GAP = "    "       -- padding between the value and the chart
+local WIN_WIDTH = 32
 
 local function severity(value, t)
   if value >= t.crit then return "ProcmonCrit" end
@@ -54,14 +56,14 @@ local function tick()
       {
         { text = " CPU " },
         { text = cpu_val, hl = cpu_hl },
-        { text = "  " },
-        { text = cpu_hist:sparkline(SPARK_WIDTH), hl = cpu_hl },
+        { text = GAP },
+        { text = cpu_hist:sparkline(SPARK_COLS, SPARK_SEP), hl = cpu_hl },
       },
       {
         { text = " RAM " },
         { text = ram_val, hl = ram_hl },
-        { text = "  " },
-        { text = ram_hist:sparkline(SPARK_WIDTH), hl = ram_hl },
+        { text = GAP },
+        { text = ram_hist:sparkline(SPARK_COLS, SPARK_SEP), hl = ram_hl },
       },
     })
   end)

@@ -18,10 +18,18 @@ function History:values()
   return vim.deepcopy(self.buf)
 end
 
-function History:sparkline(width)
+-- Render the most recent `width` samples as block-char columns.
+-- `sep` (optional) is placed between columns so the bars read as distinct
+-- columns instead of one solid blob. Output is left-padded with spaces to a
+-- fixed visual width so the chart's right edge stays anchored.
+function History:sparkline(width, sep)
+  sep = sep or ""
+  local sep_cells = vim.fn.strchars(sep)
+  local full_cells = width + math.max(0, width - 1) * sep_cells
+
   local n = #self.buf
   if n == 0 then
-    return string.rep(" ", width)
+    return string.rep(" ", full_cells)
   end
   -- take the most recent `width` samples
   local start = math.max(1, n - width + 1)
@@ -45,9 +53,10 @@ function History:sparkline(width)
     end
     chars[#chars + 1] = BLOCKS[idx]
   end
-  local bar = table.concat(chars)
+  local bar = table.concat(chars, sep)
   -- left-pad with spaces if fewer samples than width
-  local pad = width - #recent
+  local visible = #recent + math.max(0, #recent - 1) * sep_cells
+  local pad = full_cells - visible
   if pad > 0 then
     bar = string.rep(" ", pad) .. bar
   end
