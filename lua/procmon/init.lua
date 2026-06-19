@@ -69,7 +69,8 @@ local function tick()
 				{ text = GAP },
 				{ text = cpu_hist:sparkline(SPARK_COLS, SPARK_SEP), hl = cpu_hl },
 			},
-			{}, -- blank line so RAM isn't stuck to CPU
+			{}, -- blank lines so RAM isn't stuck to CPU
+			{},
 			{
 				{ text = " RAM " },
 				{ text = ram_val, hl = ram_hl },
@@ -83,6 +84,7 @@ local function tick()
 			{ { text = " PROCMON", hl = "ProcmonTitle" } },
 			{},
 			{ { text = " CPU   --", hl = "ProcmonWarn" } },
+			{},
 			{},
 			{ { text = " RAM   --", hl = "ProcmonWarn" } },
 		})
@@ -98,7 +100,7 @@ function M.show()
 	end
 	cpu_hist = cpu_hist or History.new(cfg.history)
 	ram_hist = ram_hist or History.new(cfg.history)
-	window.open({ border = cfg.border, width = WIN_WIDTH, height = 5 })
+	window.open({ border = cfg.border, width = WIN_WIDTH, height = 6 })
 	tick()
 	timer = vim.uv.new_timer()
 	timer:start(cfg.interval, cfg.interval, vim.schedule_wrap(tick))
