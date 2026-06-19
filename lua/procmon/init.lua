@@ -20,8 +20,8 @@ local defaults = {
 local cfg
 local timer
 local cpu_hist, ram_hist
-local SPARK_COLS = 8     -- number of bar columns shown
-local SPARK_SEP = " "    -- space between columns so bars read as distinct
+local SPARK_COLS = 6     -- number of bar columns shown
+local SPARK_SEP = "  "   -- 2 spaces so tall bars don't merge at high values
 local GAP = "    "       -- padding between the value and the chart
 local WIN_WIDTH = 32
 
@@ -53,12 +53,14 @@ local function tick()
 
     window.render({
       { { text = " PROCMON", hl = "ProcmonTitle" } },
+      {}, -- blank line below the title
       {
         { text = " CPU " },
         { text = cpu_val, hl = cpu_hl },
         { text = GAP },
         { text = cpu_hist:sparkline(SPARK_COLS, SPARK_SEP), hl = cpu_hl },
       },
+      {}, -- blank line so RAM isn't stuck to CPU
       {
         { text = " RAM " },
         { text = ram_val, hl = ram_hl },
@@ -70,7 +72,9 @@ local function tick()
   if not ok then
     window.render({
       { { text = " PROCMON", hl = "ProcmonTitle" } },
+      {},
       { { text = " CPU   --", hl = "ProcmonWarn" } },
+      {},
       { { text = " RAM   --", hl = "ProcmonWarn" } },
     })
     vim.schedule(function() vim.notify("procmon tick error: " .. tostring(err), vim.log.levels.DEBUG) end)
@@ -81,7 +85,7 @@ function M.show()
   if window.is_open() and timer then return end
   cpu_hist = cpu_hist or History.new(cfg.history)
   ram_hist = ram_hist or History.new(cfg.history)
-  window.open({ border = cfg.border, width = WIN_WIDTH, height = 3 })
+  window.open({ border = cfg.border, width = WIN_WIDTH, height = 5 })
   tick()
   timer = vim.uv.new_timer()
   timer:start(cfg.interval, cfg.interval, vim.schedule_wrap(tick))
